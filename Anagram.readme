@@ -1,0 +1,162 @@
+Problem Statement
+ Two words are anagrams of one another if their letters can be rearranged to
+ form the other word.
+ Given a string, split it into two contiguous substrings of equal length.
+ Determine the minimum number of characters to change to make the two
+ substrings into anagrams of one another.
+ Example
+ Break into two parts: 'abc' and 'cde'. Note that all letters have been
+ used, the substrings are contiguous and their lengths are equal. Now you can
+ change 'a' and 'b' in the first substring to 'd' and 'e' to have 'dec' and
+ 'cde' which are anagrams. Two changes were necessary.
+ Function Description
+ Complete the anagram function in the editor below.
+ anagram has the following parameter(s):
+ string s: a string
+ Returns
+ int: the minimum number of characters to change or-1.
+ Input Format
+ The first line will contain an integer, , the number of test cases.
+ Each test case will contain a string .
+ Constraints
+ consists only of characters in the range ascii[a-z].
+ Sample Input
+ 6
+ aaabbb
+ ab
+ abc
+ mnop
+ xyyx
+ xaxbbbxx
+ Sample Output
+ 3
+ 1-1
+ 2
+ 0
+ 1
+ Explanation
+ Test Case #01: We split into two strings ='aaa' and ='bbb'. We have to
+ replace all three characters from the first string with 'b' to make the
+ strings anagrams.
+Test Case #02: You have to replace 'a' with 'b', which will generate "bb".
+ Test Case #03: It is not possible for two strings of unequal length to be
+ anagrams of one another.
+ Test Case #04: We have to replace both the characters of first string ("mn")
+ to make it an anagram of the other one.
+ Test Case #05: and are already anagrams of one another.
+ Test Case #06: Here S1 = "xaxb" and S2 = "bbxx". You must replace 'a' from
+ S1 with 'b' so that S1 = "xbxb".
+ Solutions
+ Shreyas JavaScript
+ function anagram(s) {
+ // Write your code here
+ let n = s.length;
+ if (n % 2 !== 0) return-1;
+ let a = Array.from(Array(26), () => 0);
+ let b = Array.from(Array(26), () => 0);
+ for (let i = 0; i < (n / 2); i++) {
+ a[charDiff(s[i])]++;
+ }
+ // console.log(a);
+ for (let i = n / 2; i < n; i++) {
+ b[charDiff(s[i])]++;
+ }
+ // console.log(b);
+ // console.log("===")
+ let res = 0;
+ for (let i = 0; i < 26; i++) {
+ res += Math.abs(a[i]-b[i]);
+ }
+ return res / 2;
+ }
+AyushGuptacpp
+ int anagram(string s) {
+ int charArr1[26]={0};
+ int charArr2[26]={0};
+ if (s.length()%2 == 1) {
+ return-1;
+ }
+ for (int i=0; i<s.length()/2; i++) {
+ charArr1[s[i]-'a']++;
+ }
+ for (int i=s.length()/2; i<s.length(); i++) {
+ charArr2[s[i]-'a']++;
+ }
+ int sum = 0;
+ for (int i=0; i<26; i++) {
+ int temp = charArr1[i]-charArr2[i];
+ if (temp > 0) {
+ sum = sum + temp;
+ } else {
+ sum = sum-temp;
+ }
+ }
+ return sum/2;
+ }
+ KhushiAgarwalcpp
+ int anagram(string s) {
+ int n = s.length();
+ if(n%2!=0){
+ return-1;
+ }
+ string s1 = s.substr(0,n/2);
+ string s2 = s.substr(n/2, n);
+map<char, int> m1;
+ map<char, int> m2;
+ for(int i=0; i<s1.length(); i++){
+ m1[s1[i]]++;
+ m2[s2[i]]++;
+ }
+ int ans=0;
+ for(char c='a';c<='z';c++){
+ ans+=abs(m1[c]-m2[c]);
+ }
+ return ans/2;
+ }
+ HarshaJavalkar JavaScript
+ function anagram(s){
+ if(s.length%2!==0) {
+ return-1;
+ }
+ let firstHalfOcc= {}
+ let secondHalfOcc= {}
+ let givenStringArray = s.split('')
+ for(let i =0 ; i< givenStringArray.length/2 ; ++i ){
+ if(firstHalfOcc[givenStringArray[i]]){
+ firstHalfOcc[givenStringArray[i]]++
+ } else {
+ firstHalfOcc[givenStringArray[i]] =1
+ }
+ }
+ for(let i=givenStringArray.length/2; i<givenStringArray.length ; ++i
+ ){
+ if(secondHalfOcc[givenStringArray[i]]){
+ secondHalfOcc[givenStringArray[i]]++
+ } else{
+ secondHalfOcc[givenStringArray[i]] =1
+ }
+ }
+const diffValues =getDifferentValues(firstHalfOcc,secondHalfOcc)
+ return (Object.entries(diffValues).reduce((total, [key ,value])=>{
+ return total+value
+ },0))/2
+ }
+ function getDifferentValues(obj1, obj2) {
+ let temp ={}
+ Object.keys(obj1).forEach(key=>{
+ if(obj2[key] ){
+ temp[key] = Math.abs(obj1[key]-obj2[key])
+ }
+ else{
+ temp[key] = obj1[key]
+ }
+ })
+ Object.keys(obj2).forEach(key=>{
+ if(obj1[key]){
+ temp[key] = Math.abs(obj2[key]-obj1[key])
+ } else{
+ temp[key] = obj2[key]
+ }
+ })
+ return temp
+ }
